@@ -7,8 +7,9 @@ import time
 import os
 import urllib.request
 
+logfile = "nodewatch.log"
 logging.basicConfig(
-    filename="nodewatch_control.log",
+    filename=logfile,
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
@@ -41,6 +42,7 @@ class NodewatchControlServer:
             logging.info("Nodewatch Control Server started.")
             logging.info(f"CLIENT SETUP SCRIPT: sudo apt upgrade && sudo apt update &&  sudo apt install python3 && wget https://raw.githubusercontent.com/c2nissy/nodewatchv1/refs/heads/main/client.py && sleep 1 && python3 client.py {get_public_ip()} RenameMe")
             print(f"Nodewatch Control Server running on {self.host}:{self.port}")
+            print(f"logfile: {logfile}")
             threading.Thread(target=self.monitor_servers, daemon=True).start()
             threading.Thread(target=self.display_online_servers, daemon=True).start()
             while self.running:
@@ -99,6 +101,7 @@ class NodewatchControlServer:
             time.sleep(30)  
             os.system("clear")
             print(f"Nodewatch Control Server running on {self.host}:{self.port}")
+            print(f"logfile: {logfile}")
             with self.lock:
                 if self.server_stats:
                     print("Online servers and their statuses:")
